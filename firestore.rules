@@ -1,0 +1,131 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    function userProfile() { return get(/databases/$(db)/documents/users/$(request.auth.uid)).data; }
+    function role() { return userProfile().role; }
+    function isAdmin() { return request.auth != null && role() == 'admin'; }
+    function customRole() {
+      return userProfile().get('customRoleId', null) is string
+        ? get(/databases/$(db)/documents/roles/$(userProfile().get('customRoleId', null))).data
+        : {};
+    }
+    function moduleReadFrom(source, module) {
+      let permissions = source.get('permissions', {});
+      let grant = permissions.get(module, false);
+      return grant == true || (grant is map && grant.get('read', false) == true);
+    }
+    function moduleWriteFrom(source, module) {
+      let permissions = source.get('permissions', {});
+      let grant = permissions.get(module, false);
+      return grant == true || (
+        grant is map
+        && grant.get('read', false) == true
+        && grant.get('write', false) == true
+      );
+    }
+    function canRead(module) {
+      return isAdmin() || (
+        request.auth != null
+        && (moduleReadFrom(userProfile(), module) || moduleReadFrom(customRole(), module))
+      );
+    }
+    function canWrite(module) {
+      return isAdmin() || (
+        request.auth != null
+        && (moduleWriteFrom(userProfile(), module) || moduleWriteFrom(customRole(), module))
+      );
+    }
+    function validAssignedRole(data) {
+      return data.customRoleId is string
+        && get(/databases/$(db)/documents/roles/$(data.customRoleId)).data.system != true
+        && get(/databases/$(db)/documents/roles/$(data.customRoleId)).data.baseRole == data.role
+        && data.role in ['supervisor', 'carpenter', 'client']
+        && data.permissions == get(/databases/$(db)/documents/roles/$(data.customRoleId)).data.permissions
+        && data.customRoleName == get(/databases/$(db)/documents/roles/$(data.customRoleId)).data.name;
+    }
+    function mine() { return request.auth != null && resource.data.clientUid == request.auth.uid; }
+    function staffOn() { return request.auth != null && (resource.data.supervisorUid == request.auth.uid || resource.data.carpenterUid == request.auth.uid); }
+
+    match /users/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid || isAdmin() || canRead('team');
+      allow update: if isAdmin() || (
+        canWrite('team') && uid != request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'name', 'role', 'customRoleId', 'customRoleName', 'permissions'
+        ])
+        && validAssignedRole(request.resource.data)
+      );
+      allow delete: if isAdmin() || (canWrite('team') && uid != request.auth.uid);
+    }
+    match /roles/{id} {
+      allow read: if isAdmin()
+        || canRead('team')
+        || (request.auth != null && userProfile().customRoleId == id);
+      allow create, update, delete: if canWrite('roles');
+    }
+
+    match /projects/{id} {
+      allow read: if canRead('projects') || canRead('proposals') || canRead('payments') || canRead('vendors');
+      allow create: if canWrite('new-project');
+      allow update: if canWrite('projects');
+      allow update: if canWrite('proposals')
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'proposal', 'startDate', 'endDate', 'total', 'finalized',
+          'finalizedAt', 'status'
+        ]);
+      allow update: if canWrite('payments')
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['paid', 'updatedAt']);
+      allow delete: if canWrite('projects');
+      allow read: if mine() || staffOn();
+      allow update: if mine() && resource.data.status == 'quoted'
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+        && request.resource.data.status == 'approved';
+      match /materialRequests/{requestId} {
+        allow read: if isAdmin()
+          || (request.auth != null && (
+            resource.data.supervisorUid == request.auth.uid
+            || resource.data.carpenterUid == request.auth.uid
+          ));
+      }
+      // Client phone and email: admin only.
+      match /private/{doc} { allow read, write: if isAdmin(); }
+    }
+
+    match /payments/{id} {
+      allow read: if canRead('payments');
+      allow create, update, delete: if canWrite('payments');
+      allow read: if mine();
+      allow update: if mine() && resource.data.status == 'requested'
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'screenshotUrl'])
+        && request.resource.data.status == 'submitted';
+    }
+
+    match /vendors/{id} {
+      allow read: if canRead('vendors');
+      allow create, update, delete: if canWrite('vendors');
+    }
+    match /vendorPayments/{id} {
+      allow read: if canRead('vendors');
+      allow create, update, delete: if canWrite('vendors');
+    }
+
+    match /updates/{id} {
+      allow read: if isAdmin() || mine();
+      allow read: if request.auth != null && resource.data.supervisorUid == request.auth.uid;
+      allow create, update: if request.auth != null && role() == 'supervisor'
+        && request.resource.data.supervisorUid == request.auth.uid;
+    }
+
+    match /issues/{id} {
+      allow read: if isAdmin();
+      allow read: if mine() && resource.data.kind == 'complaint';
+      allow read: if request.auth != null && (resource.data.supervisorUid == request.auth.uid || resource.data.raisedBy == request.auth.uid);
+      allow create: if request.auth != null && request.resource.data.raisedBy == request.auth.uid
+        && request.resource.data.status == 'open' && (
+          (role() == 'carpenter' && request.resource.data.kind in ['material', 'blocked'])
+          || (role() == 'client' && request.resource.data.kind == 'complaint' && request.resource.data.clientUid == request.auth.uid));
+      allow update: if request.auth != null && role() == 'supervisor' && resource.data.supervisorUid == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'resolution', 'resolvedAt']);
+    }
+  }
+}

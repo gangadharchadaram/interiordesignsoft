@@ -1,0 +1,27 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function hasNewProjectWrite() {
+      let user = firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data;
+      let profilePermission = user.permissions['new-project'];
+      let assignedRole = user.customRoleId is string
+        ? firestore.get(/databases/(default)/documents/roles/$(user.customRoleId)).data
+        : {};
+      let rolePermission = assignedRole.permissions['new-project'];
+      return user.role == 'admin'
+        || profilePermission == true
+        || (profilePermission.read == true && profilePermission.write == true)
+        || rolePermission == true
+        || (rolePermission.read == true && rolePermission.write == true);
+    }
+
+    match /projects/{pid}/{allPaths=**} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null
+        && (
+          firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role in ['admin','supervisor','client']
+          || hasNewProjectWrite()
+        );
+    }
+  }
+}

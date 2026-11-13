@@ -1,0 +1,49 @@
+.admin-payments-page { display: grid; gap: 28px; color: #20372e; }
+.admin-payments-header, .admin-payment-section-heading, .admin-payment-schedule-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.admin-payments-header h1 { margin: 5px 0 6px; font-size: clamp(26px, 3vw, 36px); }
+.admin-payments-header .sub, .admin-payment-section-heading .sub { margin: 0; color: #7a8981; font-size: 13px; line-height: 1.5; }
+.admin-payment-eyebrow { color: #0d7863; font-size: 10px; font-weight: 800; letter-spacing: .14em; }
+.admin-payment-count { min-width: 110px; padding: 12px 16px; border: 1px solid #dbe9e2; border-radius: 13px; background: #fff; display: grid; gap: 4px; text-align: center; }
+.admin-payment-count strong { font-size: 24px; }
+.admin-payment-count span, .admin-payment-count-small { color: #718078; font-size: 11px; }
+.admin-payment-section-heading { align-items: center; margin-bottom: 14px; }
+.admin-payment-section-heading h2 { display: flex; align-items: center; gap: 9px; margin: 7px 0; font-size: 19px; }
+.admin-payment-count-small { padding: 7px 10px; border-radius: 99px; background: #eaf6f0; color: #0d7863; font-weight: 700; white-space: nowrap; }
+.admin-payment-schedule-list { display: grid; gap: 14px; }
+.admin-payment-schedule-card { padding: 18px; border: 1px solid #e0e9e3; border-radius: 14px; background: #fff; }
+.admin-payment-schedule-header { align-items: center; padding-bottom: 14px; border-bottom: 1px solid #edf1ee; }
+.admin-payment-schedule-header h3 { margin: 0 0 5px; font-size: 15px; }
+.admin-payment-schedule-header p { margin: 0; color: #829088; font-size: 12px; text-transform: capitalize; }
+.admin-payment-schedule-header > strong { font-size: 18px; white-space: nowrap; }
+.admin-payment-milestones { display: grid; }
+.admin-payment-milestone { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid #f0f3f1; }
+.admin-payment-milestone:last-child { border-bottom: 0; padding-bottom: 0; }
+.admin-payment-milestone-icon { width: 34px; height: 34px; flex: 0 0 34px; display: grid; place-items: center; border-radius: 10px; color: #0d7863; background: #e8f5ef; }
+.admin-payment-milestone-copy { flex: 1; min-width: 0; display: grid; gap: 5px; }
+.admin-payment-milestone-copy strong { font-size: 13px; }
+.admin-payment-milestone-copy span { display: flex; align-items: center; gap: 5px; color: #839087; font-size: 11px; }
+.admin-payment-milestone-amount { white-space: nowrap; font-size: 14px; }
+.admin-payment-empty { padding: 26px; display: grid; place-items: center; gap: 8px; color: #718078; text-align: center; }
+.admin-payment-empty h3, .admin-payment-empty p { margin: 0; }
+.admin-payment-empty h3 { color: #263e33; font-size: 15px; }
+.admin-payment-message { margin: 12px 0; font-size: 12px; }
+.admin-payment-message.error { color: #b54732; }
+.admin-payment-message.success { color: #0d7863; }
+.admin-payment-card { padding: 18px; display: grid; gap: 16px; border: 1px solid #e0e9e3; border-radius: 14px; background: #fff; }
+.admin-payment-top { display: flex; justify-content: space-between; gap: 12px; }
+.admin-payment-top h3 { margin: 6px 0; font-size: 16px; }
+.admin-payment-top .sub { margin: 0; color: #829088; font-size: 12px; }
+.admin-payment-status { height: fit-content; padding: 6px 9px; border-radius: 99px; background: #fff4dc; color: #94620d; font-size: 10px; white-space: nowrap; }
+.admin-payment-reported { display: flex; justify-content: space-between; padding: 12px; border-radius: 10px; background: #f3f8f5; font-size: 12px; }
+.admin-payment-reported strong { font-size: 15px; }
+.admin-payment-proof { color: #0d7863; font-size: 12px; }
+.admin-payment-splits { display: grid; gap: 12px; }
+.admin-payment-split { display: grid; grid-template-columns: 1fr 1fr auto; align-items: end; gap: 10px; }
+.admin-payment-split label { display: grid; gap: 6px; color: #6e7f75; font-size: 11px; }
+.admin-payment-split input, .admin-payment-split select { width: 100%; min-width: 0; padding: 10px; border: 1px solid #dce7df; border-radius: 8px; background: #fff; color: #20372e; }
+.admin-payment-split button, .admin-payment-inline-actions button { border: 0; background: transparent; color: #0d7863; cursor: pointer; font-size: 12px; }
+.admin-payment-inline-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.admin-payment-inline-actions strong { font-size: 14px; }
+.admin-payment-submit { width: 100%; padding: 12px 14px; border: 0; border-radius: 9px; background: #0d7863; color: #fff; font-weight: 700; cursor: pointer; }
+.admin-payment-submit:disabled { opacity: .55; cursor: not-allowed; }
+@media (max-width: 600px) { .admin-payments-header, .admin-payment-schedule-header { align-items: flex-start; } .admin-payment-split { grid-template-columns: 1fr; } .admin-payment-milestone { gap: 8px; } .admin-payment-milestone-amount { font-size: 12px; } }

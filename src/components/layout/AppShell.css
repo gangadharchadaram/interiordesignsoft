@@ -1,0 +1,631 @@
+:root {
+  --ne-primary: #0d7b65;
+  --ne-primary-dark: #09634f;
+  --ne-primary-soft: #e2f4ee;
+
+  --ne-bg: #f7f7f3;
+  --ne-card: #ffffff;
+
+  --ne-text: #1c2925;
+  --ne-text-soft: #687873;
+  --ne-text-muted: #899691;
+
+  --ne-border: #d5e5df;
+  --ne-border-light: #e5ece8;
+
+  --ne-warning-bg: #fff0e9;
+  --ne-warning: #b34d2d;
+
+  --ne-radius-lg: 22px;
+  --ne-radius-md: 16px;
+  --ne-radius-sm: 12px;
+
+  --ne-content-width: 1080px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--ne-bg);
+  color: var(--ne-text);
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.nes-app {
+  min-height: 100vh;
+  background: var(--ne-bg);
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.nes-header {
+  width: 100%;
+  background: var(--ne-bg);
+}
+
+.nes-header-inner {
+  width: min(var(--ne-content-width), calc(100% - 40px));
+  margin: 0 auto;
+
+  min-height: 116px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+}
+
+/* =========================================
+   BRAND
+========================================= */
+
+.nes-brand {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 0;
+}
+
+.nes-logo {
+  width: 54px;
+  height: 54px;
+
+  border-radius: 15px;
+
+  background: var(--ne-primary);
+  color: #fff;
+
+  display: grid;
+  place-items: center;
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 21px;
+  font-weight: 700;
+
+  flex-shrink: 0;
+}
+
+.nes-brand-copy {
+  min-width: 0;
+}
+
+.nes-brand-name {
+  color: var(--ne-text);
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 23px;
+  font-weight: 700;
+
+  line-height: 1.1;
+}
+
+.nes-brand-meta {
+  margin-top: 5px;
+
+  color: var(--ne-text-soft);
+
+  font-size: 14px;
+  line-height: 1.2;
+
+  display: flex;
+  gap: 6px;
+}
+
+/* =========================================
+   SIGN OUT
+========================================= */
+
+.nes-signout {
+  border: 1px solid var(--ne-border);
+
+  background: transparent;
+
+  color: var(--ne-primary);
+
+  border-radius: 12px;
+
+  min-height: 42px;
+  padding: 0 16px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.nes-signout:hover {
+  background: #fff;
+  border-color: var(--ne-primary);
+}
+
+.nes-signout:active {
+  transform: translateY(1px);
+}
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+.nes-navigation-wrap {
+  width: min(var(--ne-content-width), calc(100% - 40px));
+  margin: 0 auto;
+
+  border-bottom: 1px solid var(--ne-border);
+}
+
+.nes-navigation {
+  display: flex;
+  align-items: flex-end;
+  gap: 9px;
+
+  overflow-x: auto;
+
+  scrollbar-width: none;
+}
+
+.nes-navigation::-webkit-scrollbar {
+  display: none;
+}
+
+.nes-nav-item {
+  flex-shrink: 0;
+
+  min-height: 48px;
+
+  padding: 0 19px;
+
+  border: 1px solid var(--ne-border);
+
+  border-bottom: 0;
+
+  border-radius: 15px 15px 0 0;
+
+  background: #fff;
+
+  color: var(--ne-primary);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  font-size: 14px;
+  font-weight: 650;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.nes-nav-item:hover {
+  background: var(--ne-primary-soft);
+}
+
+.nes-nav-active {
+  background: var(--ne-primary);
+  color: #fff;
+
+  border-color: var(--ne-primary);
+}
+
+.nes-nav-active:hover {
+  background: var(--ne-primary-dark);
+}
+
+/* =========================================
+   MOBILE MENU
+========================================= */
+
+.nes-mobile-menu,
+.nes-mobile-signout {
+  display: none;
+}
+
+/* =========================================
+   MAIN
+========================================= */
+
+.nes-main {
+  width: min(var(--ne-content-width), calc(100% - 40px));
+  margin: 0 auto;
+
+  padding: 38px 0 70px;
+}
+
+.nes-page-content {
+  width: 100%;
+}
+
+/* =========================================
+   PAGE HEADING
+========================================= */
+
+.nes-page-heading {
+  min-height: 86px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+
+  margin-bottom: 25px;
+}
+
+.nes-heading-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nes-page-title {
+  margin: 0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  color: var(--ne-text);
+
+  font-size: clamp(34px, 4vw, 48px);
+  line-height: 1.05;
+
+  letter-spacing: -1.5px;
+}
+
+.nes-page-subtitle {
+  margin: 8px 0 0;
+
+  color: var(--ne-text-soft);
+
+  font-size: 15px;
+}
+
+.nes-back-button {
+  width: 52px;
+  height: 52px;
+
+  border-radius: 50%;
+
+  border: 1px solid var(--ne-border);
+
+  background: #fff;
+
+  color: var(--ne-primary);
+
+  font-size: 28px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.nes-back-button:hover {
+  background: var(--ne-primary-soft);
+  border-color: var(--ne-primary);
+}
+
+/* =========================================
+   COMMON CARD
+========================================= */
+
+.ne-card {
+  background: var(--ne-card);
+
+  border: 1px solid var(--ne-border);
+
+  border-radius: var(--ne-radius-lg);
+
+  padding: 26px;
+
+  box-shadow:
+    0 2px 5px rgba(23, 59, 50, 0.025),
+    0 10px 28px rgba(23, 59, 50, 0.025);
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.ne-btn {
+  min-height: 46px;
+
+  border-radius: 12px;
+
+  padding: 0 18px;
+
+  border: 1px solid transparent;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.ne-btn:active {
+  transform: translateY(1px);
+}
+
+.ne-btn-primary {
+  background: var(--ne-primary);
+  color: #fff;
+}
+
+.ne-btn-primary:hover {
+  background: var(--ne-primary-dark);
+}
+
+.ne-btn-secondary {
+  background: #fff;
+  color: var(--ne-primary);
+  border-color: var(--ne-border);
+}
+
+.ne-btn-secondary:hover {
+  border-color: var(--ne-primary);
+  background: var(--ne-primary-soft);
+}
+
+.ne-btn-danger {
+  background: var(--ne-warning-bg);
+  color: var(--ne-warning);
+  border-color: #f3cbbb;
+}
+
+/* =========================================
+   STATUS BADGES
+========================================= */
+
+.ne-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 30px;
+
+  padding: 0 12px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ne-status-success {
+  background: var(--ne-primary-soft);
+  color: var(--ne-primary);
+}
+
+.ne-status-warning {
+  background: var(--ne-warning-bg);
+  color: var(--ne-warning);
+}
+
+.ne-status-neutral {
+  background: #f1f3f1;
+  color: #69736f;
+}
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.ne-empty {
+  min-height: 190px;
+
+  border: 1px dashed var(--ne-border);
+
+  border-radius: var(--ne-radius-md);
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 25px;
+}
+
+.ne-empty-title {
+  margin: 12px 0 5px;
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.ne-empty-text {
+  margin: 0;
+
+  color: var(--ne-text-soft);
+
+  font-size: 14px;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 760px) {
+  .nes-header-inner {
+    width: calc(100% - 28px);
+    min-height: 92px;
+  }
+
+  .nes-navigation-wrap {
+    width: calc(100% - 28px);
+  }
+
+  .nes-main {
+    width: calc(100% - 28px);
+    padding-top: 25px;
+  }
+
+  .nes-brand-name {
+    font-size: 20px;
+  }
+
+  .nes-brand-meta {
+    font-size: 13px;
+  }
+
+  .nes-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 13px;
+  }
+
+  .nes-signout-desktop {
+    display: none;
+  }
+
+  .nes-mobile-menu {
+    display: inline-grid;
+    place-items: center;
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 11px;
+
+    border: 1px solid var(--ne-border);
+
+    background: #fff;
+
+    color: var(--ne-primary);
+  }
+
+  .nes-navigation-wrap {
+    display: none;
+  }
+
+  .nes-navigation-wrap.nes-navigation-open {
+    display: block;
+  }
+
+  .nes-navigation {
+    flex-direction: column;
+    align-items: stretch;
+
+    padding: 12px 0 15px;
+
+    gap: 7px;
+  }
+
+  .nes-nav-item {
+    min-height: 46px;
+
+    border: 1px solid var(--ne-border);
+
+    border-radius: 11px;
+
+    justify-content: flex-start;
+
+    padding: 0 15px;
+  }
+
+  .nes-mobile-signout {
+    min-height: 46px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    border: 1px solid #efcbbb;
+
+    border-radius: 11px;
+
+    background: var(--ne-warning-bg);
+
+    color: var(--ne-warning);
+
+    padding: 0 15px;
+
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .nes-page-heading {
+    align-items: flex-start;
+    flex-direction: column;
+
+    min-height: auto;
+
+    margin-bottom: 20px;
+  }
+
+  .nes-heading-action {
+    width: 100%;
+  }
+
+  .nes-heading-action > * {
+    width: 100%;
+  }
+
+  .nes-page-title {
+    font-size: 36px;
+  }
+
+  .ne-card {
+    padding: 20px;
+
+    border-radius: 18px;
+  }
+}
